@@ -1,0 +1,14 @@
+nlu:
+  - intent: greet
+    examples:
+      - Hello
+      - Hi
+      - Hey
+  - intent: affirm
+    examples:
+      - "Yes"
+      - "Yes, that's right"
+  - intent: deny
+    examples:
+      - "No"
+      - "No, that's wrong"
