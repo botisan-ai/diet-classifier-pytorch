@@ -1,6 +1,5 @@
 import torch
 from torch import nn, Tensor
-import torch.nn.functional as F
 
 from .config import DIETClassifierConfig
 
@@ -19,4 +18,4 @@ class IntentClassifier(nn.Module):
         # dot product similarities
         similarities = torch.mm(sentence_embedding, label_embedding.t())
 
-        return F.softmax(similarities, dim=1)
+        return similarities

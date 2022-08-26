@@ -33,7 +33,7 @@ class DIETClassifierDataModule(pl.LightningDataModule):
                 example_da = DocumentArray([Document(text=sentence) for sentence in examples])
                 features_da: DocumentArray = self.flow.post('/', inputs=example_da, show_progress=True)
                 for feature in features_da:
-                    self.intent_dataset.append((torch.from_numpy(feature.embedding), self.label_data[i]))
+                    self.intent_dataset.append((torch.from_numpy(feature.embedding), torch.tensor(i)))
 
     def train_dataloader(self):
         return DataLoader(self.intent_dataset, batch_size=self.batch_size, shuffle=True)
