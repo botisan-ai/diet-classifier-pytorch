@@ -1,5 +1,4 @@
-from ast import List
-from typing import Any, Dict
+from typing import Any, Dict, List
 import yaml
 from pathlib import Path
 from jina import Executor, requests
