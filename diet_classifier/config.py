@@ -8,4 +8,4 @@ class DIETClassifierConfig(NamedTuple):
     # Model parameters
     num_intents: int
     sentence_feature_dimension: int = 1024
-    embedding_dimension: int = 20
+    embedding_dimension: int = 40

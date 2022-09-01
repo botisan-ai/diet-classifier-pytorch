@@ -3,14 +3,24 @@ from docarray import DocumentArray, Document
 
 from executor import DIETClassifierExecutor
 
-f = Flow().add(
-    uses='jinahub+docker://ConveRTFeaturizer/latest'
+f = Flow(
+    prefetch=1,
 ).add(
-    uses=DIETClassifierExecutor, uses_with={ 'model_path': './lightning_logs/version_4/checkpoints/epoch=999-step=1000.ckpt' }
+    host='featurizer',
+    port=8888,
+    external=True,
+).add(
+    uses=DIETClassifierExecutor,
+    uses_with={
+        'nlu_filename': 'intents202208.yml',
+        'model_path': './lightning_logs/version_4/checkpoints/epoch=999-step=10000.ckpt',
+        # 'sentence_feature_dimension': 384,
+        'sentence_feature_dimension': 768,
+    },
 )
 
 with f:
-    inputs = DocumentArray([Document(text='Naw man')])
+    inputs = DocumentArray([Document(text='明天台风会来吗？')])
     outputs: DocumentArray = f.post('/', inputs)
     for doc in outputs:
         doc.summary()

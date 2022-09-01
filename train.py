@@ -6,8 +6,12 @@ from diet_classifier.classifier import DIETClassifier
 from diet_classifier.data import DIETClassifierDataModule
 
 
-datamodule = DIETClassifierDataModule()
-config = DIETClassifierConfig(num_intents=datamodule.num_intents)
+datamodule = DIETClassifierDataModule(filename='intents202208.yml', batch_size=32)
+config = DIETClassifierConfig(
+    num_intents=datamodule.num_intents,
+    # sentence_feature_dimension=384,
+    sentence_feature_dimension=768,
+)
 model = DIETClassifier(config)
 
 trainer = pl.Trainer(max_epochs=1000, log_every_n_steps=50)

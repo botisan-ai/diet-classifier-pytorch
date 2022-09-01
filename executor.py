@@ -11,11 +11,11 @@ from diet_classifier.config import DIETClassifierConfig
 from diet_classifier.classifier import DIETClassifier
 
 class DIETClassifierExecutor(Executor):
-    def __init__(self, nlu_filename='nlu.yml', model_path='./lightning_logs', **kwargs):
+    def __init__(self, nlu_filename='nlu.yml', model_path='./lightning_logs', sentence_feature_dimension: int = 1024, **kwargs):
         super().__init__(**kwargs)
         self.nlu_filename = nlu_filename
         self.read_nlu_file()
-        config = DIETClassifierConfig(num_intents=self.num_intents)
+        config = DIETClassifierConfig(num_intents=self.num_intents, sentence_feature_dimension=sentence_feature_dimension)
         self.model = DIETClassifier.load_from_checkpoint(Path(model_path).resolve(), config=config)
 
     def read_nlu_file(self):
@@ -26,7 +26,7 @@ class DIETClassifierExecutor(Executor):
 
     @requests
     def request(self, docs: DocumentArray, **kwargs) -> DocumentArray:
-        similarities = F.softmax(self.model(torch.tensor(docs.embeddings)))
+        similarities = F.softmax(self.model(torch.tensor(docs['@c[2]'].embeddings)))
         for i, doc in enumerate(docs):
             doc.embedding = similarities[i].detach().numpy()
             for j in range(self.num_intents):
@@ -34,4 +34,5 @@ class DIETClassifierExecutor(Executor):
                 intent = Document(text=self.nlu_intents[j]['intent'], modality='intent')
                 intent.scores['confidence'] = NamedScore(value=score, description='confidence')
                 doc.matches.append(intent)
+            doc.matches = sorted(doc.matches, key=lambda d: d.scores['confidence'].value, reverse=True)
         return docs

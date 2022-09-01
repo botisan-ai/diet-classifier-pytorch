@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  diet-classifier:
+    # build: .
+    image: diet-classifier:latest
+    volumes:
+      - ".:/opt/server"
+    environment:
+      - JINA_LOG_LEVEL=DEBUG
+  featurizer:
+    image: paddlenlp-featurizer:latest
+    restart: always
+    ports:
+      - 8888:8888
+    command: --port 8888
+    environment:
+      - JINA_LOG_LEVEL=DEBUG
+      - OMP_NUM_THREADS=4
+      # - MODEL_NAME=ernie-3.0-mini-zh
