@@ -28,12 +28,10 @@ class DIETClassifierDataModule(pl.LightningDataModule):
         nlu: Dict[str, Any] = yaml.load(nlu_file, Loader=yaml.Loader)
         self.nlu_intents: List[Dict[str, Any]] = nlu.get('nlu', [])
         self.num_intents = len(self.nlu_intents)
-        self.label_data = torch.eye(len(self.nlu_intents))
 
     def setup(self, stage: str):
         self.flow.start()
         self.read_nlu_file()
-        # one hot encoding for labels
         intent_data_raw = []
         for i, intent in enumerate(self.nlu_intents):
             examples: List[str] = intent.get('examples', [])

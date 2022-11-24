@@ -11,9 +11,11 @@ pydantic = "*"
 numpy = "*"
 pytorch-lightning = "*"
 pyyaml = "*"
+joblib = "*"
 
 [dev-packages]
 autopep8 = "*"
+torch-tb-profiler = "*"
 
 [requires]
 python_version = "3.9"

@@ -9,3 +9,4 @@ class DIETClassifierConfig(NamedTuple):
     num_intents: int
     sentence_feature_dimension: int = 1024
     embedding_dimension: int = 40
+    num_negative_samples: int = 20
