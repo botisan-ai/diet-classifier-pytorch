@@ -14,8 +14,8 @@ f = Flow(
 ).add(
     uses=DIETClassifierExecutor,
     uses_with={
-        'nlu_filename': 'intents202208.yml',
-        'model_path': './lightning_logs/version_0/checkpoints/epoch=999-step=10000.ckpt',
+        'nlu_filename': 'nlu_zh.yml',
+        'model_path': './lightning_logs/version_2/checkpoints/epoch=999-step=1000.ckpt',
         # 'sentence_feature_dimension': 384,
         'sentence_feature_dimension': 768,
     },

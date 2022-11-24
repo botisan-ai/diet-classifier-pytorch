@@ -151,7 +151,7 @@ class DIETClassifier(pl.LightningModule):
         negative_embeddings = embeddings_flattened[negative_indices]
         negative_labels = labels_flattened.t()[negative_indices]
 
-        bad_negatives = torch.eq(negative_labels, target_labels_flattened).any(dim=-1)
+        bad_negatives = torch.eq(negative_labels, target_labels_flattened.t().unsqueeze(-1)).all(dim=-1)
 
         return negative_embeddings, bad_negatives
 

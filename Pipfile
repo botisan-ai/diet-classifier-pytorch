@@ -12,6 +12,8 @@ numpy = "*"
 pytorch-lightning = "*"
 pyyaml = "*"
 joblib = "*"
+debugpy = "*"
+pandas = "*"
 
 [dev-packages]
 autopep8 = "*"

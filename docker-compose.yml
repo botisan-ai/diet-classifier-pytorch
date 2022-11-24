@@ -4,6 +4,8 @@ services:
   diet-classifier:
     # build: .
     image: diet-classifier:latest
+    ports:
+      - 5678:5678
     volumes:
       - ".:/opt/server"
     environment:

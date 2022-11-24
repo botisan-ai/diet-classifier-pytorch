@@ -6,7 +6,7 @@ from diet_classifier.classifier import DIETClassifier
 from diet_classifier.data import DIETClassifierDataModule
 
 
-datamodule = DIETClassifierDataModule(filename='intents202208.yml', batch_size=32)
+datamodule = DIETClassifierDataModule(filename='nlu_zh.yml', batch_size=32)
 config = DIETClassifierConfig(
     num_intents=datamodule.num_intents,
     # sentence_feature_dimension=384,
