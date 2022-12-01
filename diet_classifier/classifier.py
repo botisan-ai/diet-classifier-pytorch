@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Dict, Any
 import torch
 from torch import optim, nn, Tensor
 import torch.nn.functional as F
@@ -21,10 +21,13 @@ class DIETClassifier(pl.LightningModule):
             label_features,
         )
 
-    def predict(self, sentence_features: Tensor):
+    def predict(self, sentence_features: Tensor) -> Dict[str, Any]:
         sentence_embeddings, label_embeddings = self.forward(sentence_features)
         similarities = torch.mm(sentence_embeddings, label_embeddings.t())
-        return F.softmax(similarities, dim=-1)
+        return {
+            'similarities': F.softmax(similarities, dim=-1),
+            'sentence_embeddings': sentence_embeddings,
+        }
 
     def configure_optimizers(self):
         optimizer = optim.Adam(self.parameters(), lr=1e-3)

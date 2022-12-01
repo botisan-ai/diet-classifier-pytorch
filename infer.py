@@ -1,5 +1,8 @@
 from jina import Flow
 from docarray import DocumentArray, Document
+from pathlib import Path
+import yaml
+from typing import Dict, Any, List
 
 from executor import DIETClassifierExecutor
 
@@ -20,6 +23,10 @@ f = Flow(
         'sentence_feature_dimension': 768,
     },
 )
+
+nlu_file = open(Path('intents202208.yml').resolve(), 'r')
+nlu: Dict[str, Any] = yaml.load(nlu_file, Loader=yaml.Loader)
+nlu_intents: List[Dict[str, Any]] = nlu.get('nlu', [])
 
 with f:
     inputs = DocumentArray([Document(text='你真烦'), Document(text='大家好')])
