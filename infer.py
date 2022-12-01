@@ -32,7 +32,8 @@ with f:
     docs = []
     for i, intent in enumerate(nlu_intents):
         examples: List[str] = intent.get('examples', [])
-        example_docs = [Document(text=sentence) for sentence in examples]
+        # borrowing the modality field to store the intent
+        example_docs = [Document(text=sentence, modality=intent.get('intent')) for sentence in examples]
         docs.extend(example_docs)
     inputs = DocumentArray(docs)
     outputs: DocumentArray = f.post('/', inputs, show_progress=True, request_size=10)
