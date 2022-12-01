@@ -26,9 +26,11 @@ class DIETClassifierExecutor(Executor):
     @requests
     def request(self, docs: DocumentArray, **kwargs) -> DocumentArray:
         embeddings = docs['@c[2]'].embeddings
-        similarities = self.model.predict(torch.tensor(embeddings))
+        result = self.model.predict(torch.tensor(embeddings))
+        similarities = result.get('similarities')
+        sentence_embeddings = result.get('sentence_embeddings')
         for i, doc in enumerate(docs):
-            doc.embedding = similarities[i].detach().numpy()
+            doc.embedding = sentence_embeddings[i].detach().numpy()
             for j in range(self.num_intents):
                 score = similarities[i].detach().numpy()[j]
                 intent = Document(text=self.nlu_intents[j]['intent'], modality='intent')

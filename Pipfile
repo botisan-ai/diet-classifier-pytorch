@@ -18,6 +18,7 @@ pandas = "*"
 [dev-packages]
 autopep8 = "*"
 torch-tb-profiler = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.9"
