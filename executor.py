@@ -5,7 +5,6 @@ from jina import Executor, requests
 from docarray import DocumentArray, Document
 from docarray.score import NamedScore
 import torch
-import torch.nn.functional as F
 
 from diet_classifier.config import DIETClassifierConfig
 from diet_classifier.classifier import DIETClassifier
@@ -26,9 +25,12 @@ class DIETClassifierExecutor(Executor):
 
     @requests
     def request(self, docs: DocumentArray, **kwargs) -> DocumentArray:
-        similarities = F.softmax(self.model(torch.tensor(docs['@c[2]'].embeddings)))
+        embeddings = docs['@c[2]'].embeddings
+        result = self.model.predict(torch.tensor(embeddings))
+        similarities = result.get('similarities')
+        sentence_embeddings = result.get('sentence_embeddings')
         for i, doc in enumerate(docs):
-            doc.embedding = similarities[i].detach().numpy()
+            doc.embedding = sentence_embeddings[i].detach().numpy()
             for j in range(self.num_intents):
                 score = similarities[i].detach().numpy()[j]
                 intent = Document(text=self.nlu_intents[j]['intent'], modality='intent')

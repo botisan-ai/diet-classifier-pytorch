@@ -1,4 +1,4 @@
-import torch
+from typing import Tuple
 from torch import nn, Tensor
 
 from .config import DIETClassifierConfig
@@ -11,11 +11,8 @@ class IntentClassifier(nn.Module):
         self.sentence_embed = nn.Linear(config.sentence_feature_dimension, config.embedding_dimension)
         self.label_embed = nn.Linear(config.num_intents, config.embedding_dimension)
 
-    def forward(self, sentence_features: Tensor, label_features: Tensor):
-        sentence_embedding = self.sentence_embed(sentence_features)
-        label_embedding = self.label_embed(label_features)
+    def forward(self, sentence_features: Tensor, label_features: Tensor) -> Tuple[Tensor, Tensor]:
+        sentence_embeddings = self.sentence_embed(sentence_features)
+        label_embeddings = self.label_embed(label_features)
 
-        # dot product similarities
-        similarities = torch.mm(sentence_embedding, label_embedding.t())
-
-        return similarities
+        return sentence_embeddings, label_embeddings
