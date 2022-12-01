@@ -130,3 +130,7 @@ dmypy.json
 
 # Pytorch Lightning logs
 /lightning_logs
+/plot
+
+*.bin
+*.yml
